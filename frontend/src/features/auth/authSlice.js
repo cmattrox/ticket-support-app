@@ -56,12 +56,11 @@ export const authSlice = createSlice({
 	name: 'auth',
 	initialState,
 	reducers: {
-		// prettier-ignore
 		reset: (state) => {
-			state.isLoading = false
-            state.isError = false
-            state.isSuccess = false
-            state.message = ''
+			state.isLoading = false;
+			state.isError = false;
+			state.isSuccess = false;
+			state.message = '';
 		},
 	},
 	extraReducers: (builder) => {
