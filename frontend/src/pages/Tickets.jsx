@@ -23,7 +23,7 @@ function Tickets() {
 				dispatch(reset());
 			}
 		};
-	}, [dispatch, isSuccess]);
+	}, [dispatch, isSuccess, isError, message]);
 
 	useEffect(() => {
 		dispatch(getTickets());
