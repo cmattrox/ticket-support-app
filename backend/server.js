@@ -14,9 +14,9 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.get('/', (req, res) => {
-	res.status(200).json({ message: 'Welcome to the support ticket API' });
-});
+// app.get('/', (req, res) => {
+// 	res.status(200).json({ message: 'Welcome to the support ticket API' });
+// });
 
 // Routes
 app.use('/api/users', require('./routes/userRoutes'));
