@@ -81,7 +81,7 @@ function NewTicket() {
 							<option value="iPhone">iPhone</option>
 							<option value="Macbook Pro">Macbook Pro</option>
 							<option value="iMac">iMac</option>
-							<option value="iPad">iPhone</option>
+							<option value="iPad">iPad</option>
 						</select>
 					</div>
 					<div className="form-group">
