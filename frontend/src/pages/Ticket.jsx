@@ -159,22 +159,22 @@ function Ticket() {
 								</select>
 							</h3>
 
-							{ticket.status !== 'closed' && (
-								<div>
+							<div className="flex">
+								{ticket.status !== 'closed' && (
 									<button
 										className="btn-edit"
 										onClick={() => saveTicket()}
 									>
 										<FaSave />
 									</button>
-									<button
-										className="btn-delete"
-										onClick={() => deleteThisTicket()}
-									>
-										<FaRegTimesCircle />
-									</button>
-								</div>
-							)}
+								)}
+								<button
+									className="btn-delete"
+									onClick={() => deleteThisTicket()}
+								>
+									<FaRegTimesCircle />
+								</button>
+							</div>
 						</>
 					) : (
 						<>
