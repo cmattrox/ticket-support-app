@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getTicket, closeTicket } from '../features/tickets/ticketSlice';
+import {
+	getTicket,
+	closeTicket,
+	editTicket,
+	deleteTicket,
+} from '../features/tickets/ticketSlice';
 import {
 	getNotes,
 	createNote,
@@ -9,7 +14,7 @@ import {
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Modal from 'react-modal';
-import { FaPlus } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaSave, FaRegTimesCircle } from 'react-icons/fa';
 import BackButton from '../components/BackButton';
 import Spinner from '../components/Spinner';
 import NoteItem from '../components/NoteItem';
@@ -32,15 +37,18 @@ Modal.setAppElement('#root');
 function Ticket() {
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 	const [noteText, setNoteText] = useState('');
+	const [edit, setEdit] = useState(false);
+	const [product, setProduct] = useState('');
+	const [description, setDescription] = useState('');
 
-	const { ticket, isLoading, isSuccess, isError, message } = useSelector(
+	const { ticket, isLoading, isError, message } = useSelector(
 		(state) => state.tickets
 	);
 	const { notes, isLoading: notesIsLoading } = useSelector(
 		(state) => state.notes
 	);
 
-	const params = useParams();
+	// const params = useParams();
 	const dispatch = useDispatch();
 	const { ticketId } = useParams();
 	const navigate = useNavigate();
@@ -79,6 +87,35 @@ function Ticket() {
 		closeModal();
 	};
 
+	// Editing ticket details
+	const editDetails = () => {
+		setEdit(true);
+		setProduct(ticket.product);
+		setDescription(ticket.description);
+	};
+
+	// Save new ticket details
+	const saveTicket = () => {
+		dispatch(editTicket({ ticketId, product, description }));
+		setEdit(false);
+		toast.success('Ticket has been updated');
+		window.location.reload();
+	};
+
+	// Delete current ticket
+	const deleteThisTicket = () => {
+		if (
+			window.confirm(
+				'You are about to delete this ticket. You will not be able to get it back.'
+			)
+		) {
+			dispatch(deleteTicket(ticketId)).then(
+				toast.success('Ticket deleted.'),
+				navigate('/')
+			);
+		}
+	};
+
 	if (isLoading || notesIsLoading) {
 		return <Spinner />;
 	}
@@ -101,11 +138,82 @@ function Ticket() {
 					Date Submitted:{' '}
 					{new Date(ticket.createdAt).toLocaleString('en-us')}
 				</h3>
-				<h3>Product: {ticket.product}</h3>
+				<div className="ticket-edit">
+					{edit ? (
+						<>
+							<h3>
+								Product:{' '}
+								<select
+									className="edit-select"
+									name="product"
+									id="product"
+									value={product}
+									onChange={(e) => setProduct(e.target.value)}
+								>
+									<option value="iPhone">iPhone</option>
+									<option value="Macbook Pro">
+										Macbook Pro
+									</option>
+									<option value="iMac">iMac</option>
+									<option value="iPad">iPad</option>
+								</select>
+							</h3>
+
+							{ticket.status !== 'closed' && (
+								<div>
+									<button
+										className="btn-edit"
+										onClick={() => saveTicket()}
+									>
+										<FaSave />
+									</button>
+									<button
+										className="btn-delete"
+										onClick={() => deleteThisTicket()}
+									>
+										<FaRegTimesCircle />
+									</button>
+								</div>
+							)}
+						</>
+					) : (
+						<>
+							<h3>Product: {ticket.product}</h3>
+
+							<div className="flex">
+								{ticket.status !== 'closed' && (
+									<button
+										className="btn-edit"
+										onClick={() => editDetails()}
+									>
+										<FaEdit />
+									</button>
+								)}
+								<button
+									className="btn-delete"
+									onClick={() => deleteThisTicket()}
+								>
+									<FaRegTimesCircle />
+								</button>
+							</div>
+						</>
+					)}
+				</div>
 				<hr />
 				<div className="ticket-desc">
 					<h3>Description of Issue</h3>
-					<p>{ticket.description}</p>
+					{edit ? (
+						<textarea
+							name="description"
+							id="description"
+							className="edit-description"
+							placeholder={description}
+							value={description}
+							onChange={(e) => setDescription(e.target.value)}
+						></textarea>
+					) : (
+						<p>{ticket.description}</p>
+					)}
 				</div>
 				<h2>Notes</h2>
 			</header>

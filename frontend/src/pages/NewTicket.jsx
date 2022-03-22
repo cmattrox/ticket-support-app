@@ -14,7 +14,7 @@ function NewTicket() {
 
 	const [name] = useState(user.name);
 	const [email] = useState(user.email);
-	const [product, setProduct] = useState('');
+	const [product, setProduct] = useState('iPhone');
 	const [description, setDescription] = useState('');
 
 	const dispatch = useDispatch();
@@ -78,7 +78,9 @@ function NewTicket() {
 							value={product}
 							onChange={(e) => setProduct(e.target.value)}
 						>
-							<option value="iPhone">iPhone</option>
+							<option value="iPhone" selected>
+								iPhone
+							</option>
 							<option value="Macbook Pro">Macbook Pro</option>
 							<option value="iMac">iMac</option>
 							<option value="iPad">iPad</option>

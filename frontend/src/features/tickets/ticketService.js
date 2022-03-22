@@ -58,11 +58,43 @@ const closeTicket = async (ticketId, token) => {
 	return response.data;
 };
 
+// Delete ticket
+const deleteTicket = async (ticketId, token) => {
+	const config = {
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	};
+
+	const response = await axios.delete(API_URL + ticketId, config);
+
+	return response.data;
+};
+
+// Edit ticket
+const editTicket = async (ticketData, token) => {
+	const config = {
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	};
+
+	const response = await axios.put(
+		API_URL + ticketData.ticketId,
+		ticketData,
+		config
+	);
+
+	return response.data;
+};
+
 const ticketService = {
 	createTicket,
 	getTickets,
 	getTicket,
 	closeTicket,
+	editTicket,
+	deleteTicket,
 };
 
 export default ticketService;
