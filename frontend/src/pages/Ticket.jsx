@@ -231,10 +231,12 @@ function Ticket() {
 				style={customStyles}
 				contentLabel="Add Note"
 			>
-				<h2>Add Note</h2>
-				<button className="btn-close" onClick={closeModal}>
-					X
-				</button>
+				<div className="flex justify-between">
+					<h2>Add Note</h2>
+					<button className="btn-close" onClick={closeModal}>
+						<FaRegTimesCircle className="spin" />
+					</button>
+				</div>
 				<form onSubmit={onNoteSubmit}>
 					<div className="form-group">
 						<textarea
